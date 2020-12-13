@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %} Resumen mensual {% endblock %}
+{% block title %} Mis movimientos {% endblock %}
 
-
-{% block content %}
-    <h1>Ingresos mensuales<a href="creaalta"> Nuevo </a></h1>
-    <table>
-        <tr>
-            <th>Fecha</th>
-            <th>Concepto</th>
-            <th>Importe/Guita</th>
-        </tr>
-    {% for registro in datos %}
-        <tr>
-            <td><a href="modifica/{{registro[3]}}">{{ registro [3] }}</a></td>
-            <td>{{ registro [1] }}</td>
-            <td>{{ registro [2] }}€</td>
-        </tr>
-    {% endfor %}
-        <tr>
-            <td colspan= "3"> Total: {{ total }}€</td>
-        </tr>
-    </table>
-
+{% block mi_precioso_bloque_de_formato %}
+    <h1>Ingresos mensuales <a href="creaalta">Nuevo</a></h1>
+    {% if datos|length > 0 %}
+        <table>
+            <tr>
+                <th>Fecha</th>
+                <th>Concepto</th>
+                <th>Importe/Guita</th>
+            </tr>
+        {% for registro in datos %}
+            <tr>
+                <td><a href="modifica/{{ registro['id'] }}">{{ registro['fecha'] }}</a></td>
+                <td>{{ registro['concepto'] }}</td>
+                <td>{{ registro['cantidad'] }}€</td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td colspan="3">Total: {{total}}€</td>
+            </tr>
+        </table>
+    {% else %}
+        <p>No hay movimientos. crea el tuyo</p>
+        
+    {% endif %}
 {% endblock %}

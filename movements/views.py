@@ -3,62 +3,101 @@ from flask import render_template, request, url_for, redirect
 import csv
 import sqlite3
 
-@app.route('/')
-def listaIngresos():
-    conn = sqlite3.connect('movements/data/lista.db')
+DBFILE = 'movements/data/lista.db'
+
+def consulta(query, params=()):
+    conn = sqlite3.connect(DBFILE)
     c = conn.cursor()
-
-    c.execute('SELECT fecha, concepto, cantidad, id FROM movimientos;')
-    
     '''
-    fIngresos = open("movements/data/basedatos.csv","r")
-    csvReader = csv.reader(fIngresos, delimiter=',',quotechar='"')
-    ingresos =list(csvReader)
+    'SELECT * FROM TABLA' -> [(),(), (),]
+    'SELECT * FROM TABLA VACIA ' -> []
+    'INSERT ...' -> []
+    'UPDATE ...' -> []
+    'DELETE ...' -> []
     '''
-    ingresos = c.fetchall()
 
-    total = 0
-    for ingreso in ingresos:
-        total += float(ingreso [2])
+    c.execute(query, params)
+    conn.commit()
+
+    filas = c.fetchall()
+    print(filas)
 
     conn.close()
 
-    return render_template("movementsList.html", datos=ingresos, total=total)
 
-@app.route('/creaalta', methods=['GET','POST'])
+    if len(filas) == 0:
+        return filas
+
+    columnNames = []
+    for columnName in c.description:
+        columnNames.append(columnName[0])
+
+    listaDeDiccionarios = []
+
+    for fila in filas:
+        d = {}
+        for ix, columnName in enumerate(columnNames):
+            d[columnName] = fila[ix]
+        listaDeDiccionarios.append(d)
+
+    return listaDeDiccionarios
+
+@app.route('/')
+def listaIngresos():
+
+    ingresos = consulta('SELECT fecha, concepto, cantidad, id FROM movimientos;')
+
+    total = 0
+    for ingreso in ingresos:
+        total += float(ingreso['cantidad'])
+
+
+    return render_template("movementsList.html",datos=ingresos, total=total)
+
+@app.route('/creaalta', methods=['GET', 'POST'])
 def nuevoIngreso():
     if request.method == 'POST':
-        conn = sqlite3.connect('movements/data/lista.db')
-        c = conn.cursor()
+        # iNSERT INTO movimientos (cantidad, concepto, fecha) VALUES (1500, "Paga extra", "2020-12-16" )
 
-        c.execute('INSERT INTO movimientos(cantidad, concepto, fecha) VALUES(?,?,?);',
-                (
+        cantidad = request.form.get('cantidad')
+        try:
+            cantidad = float(cantidad)
+        except ValueError:
+            msgError = 'Cantidad debe ser numérico'
+            return render_template("alta", errores = msgError)
+
+        consulta('INSERT INTO movimientos (cantidad, concepto, fecha) VALUES (?, ? ,? );', 
+                 (
                     float(request.form.get('cantidad')),
                     request.form.get('concepto'),
                     request.form.get('fecha')
-                )
+                 )
         )
 
-        conn.commit()
-
-
-        '''
-        fIngresos = open("movements/data/basedatos.csv","a", newline="")
-        csvWriter = csv.writer(fIngresos, delimiter=',', quotechar='"')
-        csvWriter.writerow([request.form.get('fecha'), request.form.get('concepto'), request.form.get('cantidad')])
-        '''
         return redirect(url_for('listaIngresos'))
         
 
-        conn.close()
 
     return render_template("alta.html")
 
-@app.route("/modifica/<id>", methods=['GET','POST'])
-def modificaIngresos(id):
-    '''
-        1.Consulta el movimiendo por id
-        2. render_template(modifica.html, movimiento=el resultado de la consulta anterior)
-        update movimientos set concepto ="Extra de navidad" where id=4
-        delete from movimientos where id=5
-    '''
+
+@app.route("/modifica/<id>", methods=['GET', 'POST'])
+def modificaIngreso(id):
+    conn = sqlite3.connect(DBFILE)
+    c = conn.cursor()
+
+    if request.method == 'GET':
+
+        registro = consulta('SELECT fecha, concepto, cantidad, id FROM movimientos where id = ?', (id,))[0] 
+
+        return render_template("modifica.html", registro=registro)
+    else:
+        consulta('UPDATE movimientos SET fecha = ?, concepto= ?, cantidad = ? WHERE id = ?',
+                (request.form.get('fecha'),
+                request.form.get('concepto'),
+                float(request.form.get('cantidad')),
+                id
+                )
+        )
+
+        return redirect(url_for("listaIngresos"))
