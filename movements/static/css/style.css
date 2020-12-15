@@ -8,14 +8,14 @@
         header {
             color: black; 
             font-family: 'Courier New', Courier, monospace;
-            background-color: rgb(250, 233, 233)}
+            background-color: #f0e8ff}
             
         p.err-msg {
                 color: red;
                 font-size: 50%;
             }
         .container{
-            width: 80%;
+            width: 100%;
             margin: 0 auto;
             background-color: rgb(190, 173, 190);
         }
@@ -23,10 +23,13 @@
         .field label{
             display: block;
             font-weight: bold;
+            margin-left: 25px;
+            
         }
         .field input{
-            width: 100%;
+            width: 80%;
             margin-bottom: 8px;
+            text-align: center
         }
         .footer {
             position: fixed;
@@ -45,3 +48,17 @@
             color: white;
             background-color: rgb(141, 95, 141);
         }
+        .encabezado{
+            text-align: center;
+            font-weight: bold;
+        }
+        table {     font-family: "Montserrat", Sans-Serif;
+            font-size: 12px;    margin: 25px;     width: 450px; text-align: left;    border-collapse: collapse; }
+        
+        th {     font-size: 13px;     font-weight: normal;     padding: 8px;     background: #d0a5d6;
+            border-top: 4px solid rgb(190, 173, 190);    border-bottom: 1px solid #fff; color: rgb(126, 121, 126); }
+        
+        td {    padding: 8px;     background: #f0e8ff;     border-bottom: 1px solid #fff;
+            color: rgb(126, 121, 126);    border-top: 1px solid transparent; }
+        
+        tr:hover td { background: #e0d0fd; color: rgb(136, 51, 153); }

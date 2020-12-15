@@ -1,46 +1,40 @@
 {% extends 'base.html' %}
 
-{% block title %} Mis movimientos {% endblock %}
+{% block title %} Mis {% endblock %}
 
 {% block mi_precioso_bloque_de_formato %}
 <form action="creaalta" method="post">
+    {{ form.hidden_tag() }}
     <div class="field">
         {{ form.fecha.label }}
-        {{ form.fecha(type="date") }}
-        {% if form.fecha.errors %}
-            {% for msg in form.fecha.errors %}
-                <p class= "err-msg">
-                    {{ msg}}
-                </p>
-            {% endfor %}
-        {% endif %}
-        
-        
+        {{ form.fecha(type="date", class="semi") }}
+        {% for error in form.fecha.errors %}
+            <p class="err-msg">
+                {{ error }}
+            </p>
+        {% endfor %}
     </div>
     <div class="field">
         {{ form.concepto.label }}
-        {{ form.concepto }}
-        {% if form.concepto.errors %}
-            {% for msg in form.concepto.errors %}
-                <p class= "err-msg">
-                    {{ msg}}
-                </p>
-            {% endfor %}
-        {% endif %}
+        {{ form.concepto(placeholder='En que te lo has gastado') }}
+        {% for error in form.concepto.errors %}
+            <p class="err-msg">
+                {{ error }}
+            </p>
+        {% endfor %}
     </div>
     <div class="field">
-        {{ form. cantidad.label }}
-        {{ form.cantidad }}
-        {% if form.cantidad.errors %}
-            {% for msg in form.cantidad.errors %}
-                <p class= "err-msg">
-                    {{ msg}}
-                </p>
-            {% endfor %}
-        {% endif %}
+        {{ form.cantidad.label }}
+        {{ form.cantidad(placeholder='Escribe un número') }}
+        {% for error in form.cantidad.errors %}
+            <p class="err-msg">
+                {{ error }}
+            </p>
+        {% endfor %}
     </div>
     <div class="field">
         {{ form.submit }}
+        <br>
     </div>  
 </form>
 {%  endblock %}
