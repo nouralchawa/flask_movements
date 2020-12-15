@@ -4,29 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Mis movimientos - {% block title%}{% endblock %}</title>
-    <style>
-        * {
-            font-family: sans-serif;
-        }
-        header {
-            color: black; 
-            background-color: white
-            
-        }
-        body {background-color:white
-        }
-    </style>
+
+    <link href="/static/css/style.css" rel="stylesheet" >
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
 </head>
-<body>
-    <header>
-        <p>Boot Z 6 - Movimientos </p>
+<body class='content'>
+    <header class='encabezado'>
+        <p> 
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </p>    
     </header>
 
-    <section>
+    <section class='container'>
         {% block mi_precioso_bloque_de_formato %}{% endblock %}
     </section>
 
-    <footer>
+    <footer class='footer'>
         &copy; 2020 -2021. Todos los derechos reservados
     </footer>
 </body>

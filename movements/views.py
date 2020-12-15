@@ -1,9 +1,10 @@
 from movements import app
+from movements.forms import MovementForm
 from flask import render_template, request, url_for, redirect
 import csv
 import sqlite3
 
-DBFILE = 'movements/data/lista.db'
+DBFILE = app.config['DBFILE']
 
 def consulta(query, params=()):
     conn = sqlite3.connect(DBFILE)
@@ -56,29 +57,26 @@ def listaIngresos():
 
 @app.route('/creaalta', methods=['GET', 'POST'])
 def nuevoIngreso():
+    form = MovementForm()
+
     if request.method == 'POST':
         # iNSERT INTO movimientos (cantidad, concepto, fecha) VALUES (1500, "Paga extra", "2020-12-16" )
 
-        cantidad = request.form.get('cantidad')
-        try:
-            cantidad = float(cantidad)
-        except ValueError:
-            msgError = 'Cantidad debe ser numérico'
-            return render_template("alta", errores = msgError)
-
-        consulta('INSERT INTO movimientos (cantidad, concepto, fecha) VALUES (?, ? ,? );', 
-                 (
-                    float(request.form.get('cantidad')),
-                    request.form.get('concepto'),
-                    request.form.get('fecha')
-                 )
-        )
-
-        return redirect(url_for('listaIngresos'))
+        if form.validate():
         
 
+            consulta('INSERT INTO movimientos (cantidad, concepto, fecha) VALUES (?, ? ,? );', 
+                    (
+                        float(form.cantidad.data),
+                        form.cantidad.data,
+                        form.fecha.data)
+                    )
+            
 
-    return render_template("alta.html")
+            return redirect(url_for('listaIngresos'))
+        
+
+    return render_template("alta.html", form= form)
 
 
 @app.route("/modifica/<id>", methods=['GET', 'POST'])

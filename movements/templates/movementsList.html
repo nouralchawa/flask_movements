@@ -3,7 +3,7 @@
 {% block title %} Mis movimientos {% endblock %}
 
 {% block mi_precioso_bloque_de_formato %}
-    <h1>Ingresos mensuales <a href="creaalta">Nuevo</a></h1>
+    <h1>Ingresos mensuales</h1>
     {% if datos|length > 0 %}
         <table>
             <tr>
@@ -26,4 +26,7 @@
         <p>No hay movimientos. crea el tuyo</p>
         
     {% endif %}
+    <br>
+    <br>
+    <a href="creaalta">Nuevo</a>
 {% endblock %}
