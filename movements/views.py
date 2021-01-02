@@ -105,3 +105,13 @@ def modificaIngreso(id):
             return redirect(url_for("listaIngresos"))
         else:
             return render_template("modifica.html", form=form, id=id)
+
+@app.route("/delete/<id>", methods=['GET', 'POST'])
+def deleteIngreso(id):
+
+    if request.method == 'GET':
+
+        registro = consulta('DELETE FROM movimientos where id = ?', (id,))
+
+        return redirect(url_for('listaIngresos'))
+    

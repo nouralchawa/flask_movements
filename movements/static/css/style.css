@@ -62,3 +62,18 @@
             color: rgb(126, 121, 126);    border-top: 1px solid transparent; }
         
         tr:hover td { background: #e0d0fd; color: rgb(136, 51, 153); }
+
+        .boton {
+        text-decoration: none;
+        padding: 5px;
+        font-weight: 400;
+        font-size: 10px;
+        color: rgb(126, 121, 126);
+        background-color: #e0d0fd;
+        border-radius: 6px;
+        border: 1px solid rgb(136, 51, 153);
+        }
+        .boton:hover{
+        color: rgb(126, 121, 126);
+        background-color: #ffffff;
+        }

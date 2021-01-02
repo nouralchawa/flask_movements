@@ -3,3 +3,4 @@ __pycache__/
 movements/__pycache__/
 .env
 config_.py
+movements/data/basededatos.*

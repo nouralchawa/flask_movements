@@ -9,13 +9,21 @@
             <tr>
                 <th>Fecha</th>
                 <th>Concepto</th>
-                <th>Importe/Guita</th>
+                <th>Importe</th>
+                <th>Modificar/Borrar</th>
             </tr>
         {% for registro in datos %}
             <tr>
-                <td><a href="modifica/{{ registro['id'] }}">{{ registro['fecha'] }}</a></td>
+                <td>{{ registro['fecha'] }}</td>
                 <td>{{ registro['concepto'] }}</td>
                 <td>{{ registro['cantidad'] }}€</td>
+                <td><a class= boton href="modifica/{{ registro['id'] }}">&#x1f5d8</a>
+                    <a class= boton href= "delete/{{ registro['id'] }}" onclick="myFunction()">&#x2613</a></td>
+                    <script>
+                    function myFunction() {
+                    confirm("Estas seguro?");
+                    }
+                    </script>
             </tr>
         {% endfor %}
             <tr>
@@ -27,7 +35,7 @@
         
     {% endif %}
     <br>
-    <a href="creaalta">Nuevo</a>
+    <a class= boton href="creaalta">Nuevo</a>
     <br>
     <br>
 {% endblock %}
